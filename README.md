@@ -1,4 +1,4 @@
-# Web-Inventory-Management
+# Web-based Inventory Management System
 Project for Data Engineering Module
 
 ### Frameworks:
