@@ -1,2 +1,7 @@
-# Web-Inventory-Management-
+# Web-Inventory-Management
 Project for Data Engineering Module
+
+### Frameworks:
+- Django
+- PostgreSQL
+- Apache
