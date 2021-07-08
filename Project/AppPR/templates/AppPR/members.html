@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'AppPR/style.css' %}">
+    
+    <title>Procurement Requests</title>
+    <h1>Club Members</h1>
+</head>
+<nav>
+	<ul>
+		<li><a href="{% url 'index' %}">Home</a></li>
+		<li><a href="{% url 'requests' %}">Requests</a></li>
+        <li><a href="{% url 'members' %}">Members</a></li>
+        <li><a href="{% url 'inventory' %}">Inventory</a></li>
+	</ul>	
+</nav>
+<body>
+    <hr>
+    <div style="overflow-x:auto;">
+        <input type="text" id="searchinput" onkeyup="searchFunction()" placeholder="Search for names..">
+        <hr>
+        <table class="table-sm table-striped table-hover" id="memberlist">
+            <tr class="header">
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Member Role</th>
+            </tr>
+            <tr>
+            {% for r in records %}
+            <tr>
+                <td> {{ r.0 }} </td>
+                <td> {{ r.1 }} </td>
+                <td> {{ r.2 }} </td>
+            </tr>
+            {% endfor %}
+            </tr>
+        </table>
+        <script>
+            function searchFunction() {
+                var input, filter, table, tr, td, i, txtValue;
+                input = document.getElementById("searchinput");
+                filter = input.value.toUpperCase();
+                table = document.getElementById("memberlist");
+                tr = table.getElementsByTagName("tr");
+                for (i = 0; i < tr.length; i++) {
+                    td = tr[i].getElementsByTagName("td")[0];
+                    if (td) {
+                        txtValue = td.textContent || td.innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        } else {
+                            tr[i].style.display = "none";
+                  }
+                }       
+              }
+            }
+        </script>
+    </div>
+</body>
+
+</html>

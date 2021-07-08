@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'AppPR/style.css' %}">
+    
+    <title>Procurement Requests</title>
+    <h1>Requests</h1>
+</head>
+
+<nav>
+	<ul>
+		<li><a href="{% url 'index' %}">Home</a></li>
+		<li><a href="{% url 'requests' %}">Requests</a></li>
+		<li><a href="{% url 'members' %}">Members</a></li>
+		<li><a href="{% url 'inventory' %}">Inventory</a></li>
+	</ul>	
+</nav>
+<body>
+    <hr>
+    <div class="container row">
+        <div class="col-md-auto dropdown">
+            <button class="dropbtn">Filter</button>
+            <div class="dropdown-content">
+                <a href="{% url 'requests' %}">All Requests</a>
+                <a href="{% url 'pendApr' %}">Pending Approval</a>
+                <a href="{% url 'pendDel' %}">Pending Delivery</a>
+            </div>
+        </div>
+        <input type="text" id="searchinput" onkeyup="searchFunction()" placeholder="Search by Requestor..">
+    </div>
+    <hr>
+	<div style="overflow-x:auto;">
+        <table class="table-sm table-striped table-hover" id="requestlist">
+            <tr class="header">
+                <th>Request ID</th>
+                <th>Requestor</th>
+                <th>Date of Request</th>
+                <th>Item Name</th>
+				<th>Model Number</th>
+				<th>Quantity</th>
+                <th>Vendor</th>
+                <th>Unit Price (SGD$)</th>
+				<th>Ship Price (SGD$)</th>
+				<th>Status</th>
+            </tr>
+            <tr>
+            {% for r in requests %}
+            <tr>
+                <td> {{ r.0 }} </td>
+                <td> {{ r.1 }} </td>
+                <td> {{ r.2 }} </td>
+				<td> {{ r.3 }} </td>
+				<td> {{ r.4 }} </td>
+                <td> {{ r.5 }} </td>
+                <td> {{ r.6 }} </td>
+				<td> {{ r.7 }} </td>
+				<td> {{ r.8 }} </td>
+                <td> {{ r.9 }} </td>
+                <td> {{ r.10 }} </td>
+            </tr>
+            {% endfor %}
+            </tr>
+        </table>
+        <script>
+            function searchFunction() {
+                var input, filter, table, tr, td, i, txtValue;
+                input = document.getElementById("searchinput");
+                filter = input.value.toUpperCase();
+                table = document.getElementById("requestlist");
+                tr = table.getElementsByTagName("tr");
+                for (i = 0; i < tr.length; i++) {
+                    td = tr[i].getElementsByTagName("td")[1];
+                    if (td) {
+                        txtValue = td.textContent || td.innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        } else {
+                            tr[i].style.display = "none";
+                  }
+                }       
+              }
+            }
+        </script>
+    </div>
+</body>
+
+</html>

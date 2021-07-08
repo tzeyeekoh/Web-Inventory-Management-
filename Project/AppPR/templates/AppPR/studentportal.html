@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'AppPR/style.css' %}">
+
+	<title>Procurement Requests</title>
+	<h1>Student Portal</h1>
+	<div class="topright"><a class="genbutton" href="{% url 'closeportal' %}">Logout</a></div>
+</head>
+<nav>
+	<ul>
+		<li><a href="{% url 'index' %}">Home</a></li>
+		<li><a href="{% url 'requests' %}">Requests</a></li>
+		<li><a href="{% url 'members' %}">Members</a></li>
+        <li><a href="{% url 'inventory' %}">Inventory</a></li>
+	</ul>	
+</nav>
+<body>
+	<hr>
+	<div class="container">
+	<div class="row">
+		<div class='col'>
+			<h3>Submit New Request</h3>
+			<form action="newReq" method="GET">
+				<label for="item">Item</label>
+				<input type="text" id="item" name="item" placeholder="Item Name" required><br>
+				<br>
+				<label for="Remodel_number">Model Number</label>
+				<input type="text" id="model_number" name="model_number" placeholder="Model Number" required><br>
+				<br>
+				<label for="quantity">Quantity</label>
+				<input type="number" id="quantity" name="quantity" placeholder="Total Units" required><br>
+				<br>
+				<label for="vendor">Vendor</label>
+				<input type="text" id="vendor" name="vendor" placeholder="Vendor Name" required><br>
+				<br>
+				<label for="unit_price">Unit Price (SGD$)</label>
+				<input type="number" id="unit_price" name="unit_price" placeholder="Price/ unit" required><br>
+				<br>
+				<label for="ship_price">Ship Price (SGD$)</label>
+				<input type="number" id="ship_price" name="ship_price" placeholder="Shipping Cost" required><br>
+				<br>
+				<label for="requestor">Requestor (email)</label>
+				<input type="email" id="requestor" name="requestor" placeholder="Email Address" required><br>
+				<br>
+				<input type="submit" value="Submit Request">
+			</form>
+		</div>
+
+		<div class='col'>
+			<h3>Receive Item</h3>
+			<form action="recItem" method="GET">
+				<label for="ReqID">Request ID</label><br>
+				<input type="number" id="ReqID" name="ReqID" required><br>
+				<br>
+				<input type="submit" value="Item Received">
+			</form>
+			
+		</div>
+	</div>
+	</div>
+</body>
+
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	{% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'AppPR/style.css' %}">
+    <script src="{% static 'AppPR/d3.v6.min.js' %}"></script>
+    
+    <title>Procurement Requests</title>
+    <h1>Inventory</h1>
+</head>
+<nav>
+	<ul>
+		<li><a href="{% url 'index' %}">Home</a></li>
+		<li><a href="{% url 'requests' %}">Requests</a></li>
+        <li><a href="{% url 'members' %}">Members</a></li>
+        <li><a href="{% url 'inventory' %}">Inventory</a></li>
+	</ul>
+</nav>
+<body>
+    <hr>
+    
+    <div style="overflow-x:auto;">
+        <p><button class="genbutton" onclick="location.reload();">Refresh</button> <strong> Updated:</strong> <a id='time'></a></p>
+
+        <div class="container bg-light">
+        <div class="row">
+            <div class='col'>
+                {% for e in expense %}
+                <p><strong>Current Approved Expense: </strong>SGD${{ e.0 }}</p>
+                {% endfor %}
+                {% for i in inv_value %}
+                <p><strong>Current Inventory Value: </strong>SGD${{ i.0 }}</p>
+                {% endfor %}
+            </div>
+            <div class='col'>
+                <h3>Monthly Expenses</h3>
+                <div id="expChart"></div>
+            </div>
+            
+        </div>
+        </div>
+
+        <input type="text" id="searchinput" onkeyup="searchFunction()" placeholder="Search for names..">
+        <hr>
+        <table class="table-sm table-striped table-hover" id="memberlist">
+            <tr class="header">
+                <th>Item</th>
+                <th>Model Number</th>
+                <th>Inventory Quantity</th>
+            </tr>
+            <tr>
+            {% for r in records %}
+            <tr>
+                <td> {{ r.0 }} </td>
+                <td> {{ r.1 }} </td>
+                <td> {{ r.2 }} </td>
+            </tr>
+            {% endfor %}
+            </tr>
+        </table>
+        <script>
+            function searchFunction() {
+                var input, filter, table, tr, td, i, txtValue;
+                input = document.getElementById("searchinput");
+                filter = input.value.toUpperCase();
+                table = document.getElementById("memberlist");
+                tr = table.getElementsByTagName("tr");
+                for (i = 0; i < tr.length; i++) {
+                    td = tr[i].getElementsByTagName("td")[0];
+                    if (td) {
+                        txtValue = td.textContent || td.innerText;
+                        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                            tr[i].style.display = "";
+                        } else {
+                            tr[i].style.display = "none";
+                  }
+                }       
+              }
+            }
+            var t = new Date();
+            document.getElementById("time").innerHTML = t;
+
+            ///Expense Chart
+            // set the dimensions and margins of the graph
+            var margin = { top: 20, right: 20, bottom: 30, left: 100 },
+                    width = 800 - margin.left - margin.right,
+                    height = 250 - margin.top - margin.bottom;
+                // set the ranges
+                var x = d3.scaleBand()
+                    .range([0, width])
+                    .padding(0.1);
+                var y = d3.scaleLinear()
+                    .range([height, 0]);
+                // append the svg object to the body of the page
+                // append a 'group' element to 'svg'
+                // moves the 'group' element to the top left margin
+                var svg = d3.select("#expChart").append("svg")
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom)
+                    .append("g")
+                    .attr("transform","translate(" + margin.left + "," + margin.top + ")");
+                // get the data
+                d3.json("{% url 'expChart' %}").then(function (data) {
+                // format the data
+                data.forEach(function (d) {
+                    d[1] = +d[1];});
+                // Scale the range of the data in the domains
+                x.domain(data.map(function (d) { return d[0]; }));
+                y.domain([0, d3.max(data, function (d) { return d[1]; })]);
+                // append the rectangles for the bar chart
+                svg.selectAll(".bar")
+                    .data(data)
+                    .enter().append("rect")
+                    .attr("class", "bar")
+                    .attr("x", function (d) { return x(d[0]); })
+                    .attr("width", x.bandwidth())
+                    .attr("y", function (d) { return y(d[1]); })
+                    .attr("height", function (d) { return height - y(d[1]); });
+                // add the x Axis
+                svg.append("g")
+                    .attr("transform", "translate(0," + height + ")")
+                    .call(d3.axisBottom(x));
+                // add the y Axis
+                svg.append("g")
+                    .call(d3.axisLeft(y));
+                // text label for the x axis
+                svg.append("text")
+                    .attr("transform", "translate(" + (width / 2) + " ," +(height + margin.top + 10) + ")")
+                    .style("text-anchor", "middle")
+                    .text("Month");
+                // add the y axis label
+                svg.append("text")
+                    .attr("transform", "rotate(-90)")
+                    .attr("y", 0 - margin.left)
+                    .attr("x", 0 - (height / 2))
+                    .attr("dy", "1em")
+                    .style("text-anchor", "middle")
+                    .text("Expense (SGD$)");
+                });
+        </script>
+    </div>
+</body>
+
+</html>

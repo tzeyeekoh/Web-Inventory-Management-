@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	{% load static %}
+	<link rel="stylesheet" type="text/css" href="{% static 'AppPR/style.css' %}">
+	
+	<title>Procurement Requests</title>
+	<h1>Procurement Request System</h1>
+</head>
+
+<nav>
+	<ul>
+		<li><a href="{% url 'index' %}">Home</a></li>
+		<li><a href="{% url 'requests' %}">Requests</a></li>
+		<li><a href="{% url 'members' %}">Members</a></li>
+		<li><a href="{% url 'inventory' %}">Inventory</a></li>
+	</ul>	
+</nav>
+<body>
+	<hr>
+	<div class="container">
+		<h4>Login to Access Functions:</h4>
+		<form action="login" method="GET">
+			<label for="ReqID">Email</label><br>
+			<input type="email" id="email" name="email"><br>
+			<label for="ReqID">Password</label><br>
+			<input type="password" id="password" name="password"><br>
+			<br>
+			<input type="submit" value="Login">
+		</form>
+	</div>
+	<hr>
+	<div class="container">
+		<h3>Procurement Requests and Tracking</h3>
+		<p>The system facilitates the request and approval procurements (e.x. tools, electronics, raw materials) for a robotics club. The system has both club staff and club member profiles. 
+			A club member submits a request to purchase an item. A staff member evaluates the procurement request and gives approval for the student to make the purchase. 
+			The system allows users to track the approval status of the requests, view the types of items being procured, and check whether the item has been received. 
+			Furthermore, the website will have pages for users to view the total number of items received from different orders and track the club’s expenses. 
+			Once an item has been shipped and received, it will become part of the club’s inventory, where inventory are identified by the item and model number. 
+			Administrators can create, modify and delete entries. </p>
+	</div>
+	
+</body>
+
+</html>
